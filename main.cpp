@@ -192,22 +192,34 @@ int main() {
 
     // int arr[] = { 12, 11, 13, 5, 6 };
     // int n = sizeof(arr) / sizeof(arr[0]);
+    int n;
+
+/*
+    for(arraySize = 10; arraySize <= 1000000; arraySize *= 10)
+    {
+
+    }
+*/
 
     // initialize random seed
     srand (time(NULL));
 
-    int arrLen = 10;
-    int arr[] = new int[arrLen];
+    int arraySize = 10;
+    int* arr = new int[arraySize];
 
-    for(int n=0; n<arrLen; n++) {
-        arr[n] = rand();
+    for(int i=0; i<arraySize; i++) {
+        arr[i] = rand()%arraySize;
     }
-    n = arrLen;
 
+
+    n = arraySize;
+
+    printArray(arr, n);
     quickSort(arr, 0, n - 1);
+    printArray(arr, n);
     // insertion_sort(arr, n);
     // heapSort(arr, n);
-    printArray(arr, n);
+
 
     return 0;
 }
