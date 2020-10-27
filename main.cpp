@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <chrono>
+
 using namespace std;
 
 void swap(int* a, int* b)
@@ -192,31 +194,68 @@ int main() {
 
     // int arr[] = { 12, 11, 13, 5, 6 };
     // int n = sizeof(arr) / sizeof(arr[0]);
-    int n;
+    int arraySize, len;
+    int iterNum = 3;
+    double sortTime[4][6] = {0};
 
-/*
-    for(arraySize = 10; arraySize <= 1000000; arraySize *= 10)
-    {
+    for(int iter = 0; iter < iterNum; iter++) {
+        for (arraySize = 10, len=0; arraySize <= 1000000; arraySize *= 10, len++) {
+            // initialize random seed
+            srand (time(NULL));
 
+            // int arraySize = 10;
+            int* arr = new int[arraySize];
+
+            for( int sortMethod = 0; sortMethod < 4; sortMethod++) {
+                // New random value array of length "arraySize"
+                for (int i = 0; i < arraySize; i++) {
+                    arr[i] = rand();
+                    //arr[i] = rand()%(arraySize*10);
+                }
+
+                auto start = chrono::high_resolution_clock::now();
+                ios_base::sync_with_stdio(false);
+                switch(sortMethod) {
+                    case 0: // Insertion Sort
+                        insertion_sort(arr, arraySize);
+                        break;
+                    case 1: // Quick Sort
+                        quickSort(arr, 0, arraySize - 1);
+                        break;
+                    case 2: // Heapsort
+                        heapSort(arr, arraySize);
+                        break;
+                    case 3: // Merge Sort
+                        heapSort(arr, arraySize);
+                        break;
+                }
+                auto end = chrono::high_resolution_clock::now();
+                double timeTaken = chrono::duration_cast<chrono::nanoseconds>(end - start).count;
+                sortTime[sortMethod][len] += timeTaken;
+            }
+
+        }
     }
-*/
 
-    // initialize random seed
-    srand (time(NULL));
-
-    int arraySize = 10;
-    int* arr = new int[arraySize];
-
-    for(int i=0; i<arraySize; i++) {
-        arr[i] = rand()%arraySize;
+    cout << endl << "Execution Time in nanosecond:" <<endl;
+    cout << "Length\t\tInsertSort\tQuickSort\tHeapSort\tMergeSort" << endl;
+    for (arraySize = 10, len=0; arraySize <= 1000000; arraySize *= 10, len++) {
+        cout << arraySize;
+        for( int sortMethod = 0; sortMethod < 4; sortMethod++) {
+            sortTime[sortMethod][len] /= <double>iterNum;
+            cout << "\t" << sortTime[sortMethod][len] << setprecision(2);
+        }
+        cout << endl;
     }
 
 
-    n = arraySize;
 
-    printArray(arr, n);
-    quickSort(arr, 0, n - 1);
-    printArray(arr, n);
+
+    //     n = arraySize;
+
+    // printArray(arr, n);
+    // quickSort(arr, 0, n - 1);
+    // printArray(arr, n);
     // insertion_sort(arr, n);
     // heapSort(arr, n);
 
