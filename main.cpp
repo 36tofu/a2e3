@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 #include <time.h>
 using namespace std;
 
@@ -189,12 +190,23 @@ void printArray(int arr[], int n)
 
 int main() {
 
-    int arr[] = { 12, 11, 13, 5, 6 };
-    int n = sizeof(arr) / sizeof(arr[0]);
+    // int arr[] = { 12, 11, 13, 5, 6 };
+    // int n = sizeof(arr) / sizeof(arr[0]);
 
-    //quickSort(arr, 0, n - 1);
-    //insertion_sort(arr, n);
-    heapSort(arr, n);
+    // initialize random seed
+    srand (time(NULL));
+
+    int arrLen = 10;
+    int arr[] = new int[arrLen];
+
+    for(int n=0; n<arrLen; n++) {
+        arr[n] = rand();
+    }
+    n = arrLen;
+
+    quickSort(arr, 0, n - 1);
+    // insertion_sort(arr, n);
+    // heapSort(arr, n);
     printArray(arr, n);
 
     return 0;
