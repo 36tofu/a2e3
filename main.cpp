@@ -194,11 +194,9 @@ void printArray(int arr[], int n)
 
 int main() {
 
-    // int arr[] = { 12, 11, 13, 5, 6 };
-    // int n = sizeof(arr) / sizeof(arr[0]);
     int arraySize, len;
-    int iterNum = 3;
-    double sortTime[4][6] = {0};
+    int iterNum = 5;
+    long int sortTime[4][6] = {0};
     clock_t start, end;
 
     for(int iter = 0; iter < iterNum; iter++) {
@@ -208,13 +206,19 @@ int main() {
 
             // int arraySize = 10;
             int* arr = new int[arraySize];
+            int* arr_origin = new int[arraySize];
+            // New random value array of length "arraySize"
+            for (int i = 0; i < arraySize; i++) {
+                arr_origin[i] = rand();
+            }
 
             for( int sortMethod = 0; sortMethod < 4; sortMethod++) {
                 // New random value array of length "arraySize"
                 for (int i = 0; i < arraySize; i++) {
-                    arr[i] = rand();
-                    //arr[i] = rand()%(arraySize*10);
+                    arr[i] = arr_origin[i];
                 }
+                // for (int i = 0; i < arraySize; i++) cout << arr[i] <<" ";
+                // cout << endl;
 
                 // auto start = chrono::high_resolution_clock::now();
                 // ios_base::sync_with_stdio(false);
@@ -230,17 +234,19 @@ int main() {
                         heapSort(arr, arraySize);
                         break;
                     case 3: // Merge Sort
-                        heapSort(arr, arraySize);
+                        mergeSort(arr, 0, arraySize-1);
                         break;
                 }
                 // auto end = chrono::high_resolution_clock::now();
                 // double timeTaken = chrono::duration_cast<chrono::nanoseconds>(end - start).count;
                 end = clock();
-                cout << sortMethod <<" "<<arraySize <<"\t" << start << "\t" << end << endl;
+                // cout << sortMethod <<" "<<arraySize <<"\t" << start << "\t" << end << endl;
                 //double timeTaken = double(end - start) / double(CLOCKS_PER_SEC) * (1000000000);
                 // double timeTaken = double(end - start) / double(CLOCKS_PER_SEC) ;
                 double timeTaken = double(end - start) ;
                 sortTime[sortMethod][len] += (long int) timeTaken;
+                // for (int i = 0; i < arraySize; i++) cout << arr[i] <<" ";
+                // cout << endl;
             }
 
         }
@@ -252,7 +258,7 @@ int main() {
         cout << arraySize;
         for( int sortMethod = 0; sortMethod < 4; sortMethod++) {
             sortTime[sortMethod][len] /= (double) iterNum;
-            cout << "\t" << sortTime[sortMethod][len] << setprecision(2);
+            cout << "\t\t" << sortTime[sortMethod][len] << setprecision(6);
         }
         cout << endl;
     }
