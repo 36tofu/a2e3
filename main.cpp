@@ -1,7 +1,9 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <bits/stdc++.h>
 #include <chrono>
+#include <iomanip>
 
 using namespace std;
 
@@ -197,9 +199,10 @@ int main() {
     int arraySize, len;
     int iterNum = 3;
     double sortTime[4][6] = {0};
+    clock_t start, end;
 
     for(int iter = 0; iter < iterNum; iter++) {
-        for (arraySize = 10, len=0; arraySize <= 1000000; arraySize *= 10, len++) {
+        for (arraySize = 10, len=0; arraySize <= 100; arraySize *= 10, len++) {
             // initialize random seed
             srand (time(NULL));
 
@@ -213,8 +216,9 @@ int main() {
                     //arr[i] = rand()%(arraySize*10);
                 }
 
-                auto start = chrono::high_resolution_clock::now();
-                ios_base::sync_with_stdio(false);
+                // auto start = chrono::high_resolution_clock::now();
+                // ios_base::sync_with_stdio(false);
+                start = clock();
                 switch(sortMethod) {
                     case 0: // Insertion Sort
                         insertion_sort(arr, arraySize);
@@ -229,9 +233,12 @@ int main() {
                         heapSort(arr, arraySize);
                         break;
                 }
-                auto end = chrono::high_resolution_clock::now();
-                double timeTaken = chrono::duration_cast<chrono::nanoseconds>(end - start).count;
-                sortTime[sortMethod][len] += timeTaken;
+                // auto end = chrono::high_resolution_clock::now();
+                // double timeTaken = chrono::duration_cast<chrono::nanoseconds>(end - start).count;
+                end = clock();
+                cout << start << "\t" << end << endl;
+                double timeTaken = double(end - start) / double(CLOCKS_PER_SEC) * (1000000000);
+                sortTime[sortMethod][len] += (long int) timeTaken;
             }
 
         }
@@ -239,10 +246,10 @@ int main() {
 
     cout << endl << "Execution Time in nanosecond:" <<endl;
     cout << "Length\t\tInsertSort\tQuickSort\tHeapSort\tMergeSort" << endl;
-    for (arraySize = 10, len=0; arraySize <= 1000000; arraySize *= 10, len++) {
+    for (arraySize = 10, len=0; len < 2; arraySize *= 10, len++) {
         cout << arraySize;
         for( int sortMethod = 0; sortMethod < 4; sortMethod++) {
-            sortTime[sortMethod][len] /= <double>iterNum;
+            sortTime[sortMethod][len] /= (double) iterNum;
             cout << "\t" << sortTime[sortMethod][len] << setprecision(2);
         }
         cout << endl;
