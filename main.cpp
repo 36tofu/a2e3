@@ -202,7 +202,7 @@ int main() {
     clock_t start, end;
 
     for(int iter = 0; iter < iterNum; iter++) {
-        for (arraySize = 10, len=0; arraySize <= 100; arraySize *= 10, len++) {
+        for (arraySize = 10, len=0; arraySize <= 100000; arraySize *= 10, len++) {
             // initialize random seed
             srand (time(NULL));
 
@@ -236,8 +236,10 @@ int main() {
                 // auto end = chrono::high_resolution_clock::now();
                 // double timeTaken = chrono::duration_cast<chrono::nanoseconds>(end - start).count;
                 end = clock();
-                cout << start << "\t" << end << endl;
-                double timeTaken = double(end - start) / double(CLOCKS_PER_SEC) * (1000000000);
+                cout << sortMethod <<" "<<arraySize <<"\t" << start << "\t" << end << endl;
+                //double timeTaken = double(end - start) / double(CLOCKS_PER_SEC) * (1000000000);
+                // double timeTaken = double(end - start) / double(CLOCKS_PER_SEC) ;
+                double timeTaken = double(end - start) ;
                 sortTime[sortMethod][len] += (long int) timeTaken;
             }
 
@@ -246,7 +248,7 @@ int main() {
 
     cout << endl << "Execution Time in nanosecond:" <<endl;
     cout << "Length\t\tInsertSort\tQuickSort\tHeapSort\tMergeSort" << endl;
-    for (arraySize = 10, len=0; len < 2; arraySize *= 10, len++) {
+    for (arraySize = 10, len=0; len < 6; arraySize *= 10, len++) {
         cout << arraySize;
         for( int sortMethod = 0; sortMethod < 4; sortMethod++) {
             sortTime[sortMethod][len] /= (double) iterNum;
